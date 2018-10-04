@@ -1,0 +1,38 @@
+LIST: bgates sjobs bjoy lellison vkhosla smcnealy dknuth bpascal hoffmant
+
+choose an ID as the starting point in the circle: dknuth
+
+DELETING: dknuth
+LIST: bgates sjobs bjoy lellison vkhosla smcnealy bpascal hoffmant
+RESUMING AT: smcnealy  and skipping 2 elements
+
+DELETING: lellison
+LIST: bgates sjobs bjoy vkhosla smcnealy bpascal hoffmant
+RESUMING AT: bjoy  and skipping 2 elements
+
+DELETING: bgates
+LIST: sjobs bjoy vkhosla smcnealy bpascal hoffmant
+RESUMING AT: hoffmant  and skipping 2 elements
+
+DELETING: smcnealy
+LIST: sjobs bjoy vkhosla bpascal hoffmant
+RESUMING AT: vkhosla  and skipping 2 elements
+
+DELETING: sjobs
+LIST: bjoy vkhosla bpascal hoffmant
+RESUMING AT: hoffmant  and skipping 2 elements
+
+DELETING: vkhosla
+LIST: bjoy bpascal hoffmant
+RESUMING AT: bjoy  and skipping 2 elements
+
+DELETING: bpascal
+LIST: bjoy hoffmant
+RESUMING AT: bjoy  and skipping 2 elements
+
+DELETING: bjoy
+LIST: hoffmant
+RESUMING AT: hoffmant  and skipping 2 elements
+
+DELETING: hoffmant   <-- was the last man standing!
+

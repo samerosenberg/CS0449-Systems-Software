@@ -1,0 +1,46 @@
+LIST: Aronis Hoffman Lange Lee Litman Marai Melhem Misurda Mosse Novacky Ramirez
+
+choose a name as the starting point in the circle: Lee
+
+DELETING: Lee
+LIST: Aronis Hoffman Lange Litman Marai Melhem Misurda Mosse Novacky Ramirez
+RESUMING AT: Lange  and skipping 2 elements
+
+DELETING: Aronis
+LIST: Hoffman Lange Litman Marai Melhem Misurda Mosse Novacky Ramirez
+RESUMING AT: Ramirez  and skipping 2 elements
+
+DELETING: Mosse
+LIST: Hoffman Lange Litman Marai Melhem Misurda Novacky Ramirez
+RESUMING AT: Misurda  and skipping 2 elements
+
+DELETING: Marai
+LIST: Hoffman Lange Litman Melhem Misurda Novacky Ramirez
+RESUMING AT: Litman  and skipping 2 elements
+
+DELETING: Hoffman
+LIST: Lange Litman Melhem Misurda Novacky Ramirez
+RESUMING AT: Ramirez  and skipping 2 elements
+
+DELETING: Misurda
+LIST: Lange Litman Melhem Novacky Ramirez
+RESUMING AT: Melhem  and skipping 2 elements
+
+DELETING: Lange
+LIST: Litman Melhem Novacky Ramirez
+RESUMING AT: Ramirez  and skipping 2 elements
+
+DELETING: Melhem
+LIST: Litman Novacky Ramirez
+RESUMING AT: Litman  and skipping 2 elements
+
+DELETING: Novacky
+LIST: Litman Ramirez
+RESUMING AT: Litman  and skipping 2 elements
+
+DELETING: Litman
+LIST: Ramirez
+RESUMING AT: Ramirez  and skipping 2 elements
+
+DELETING: Ramirez   <-- was the last man standing!
+

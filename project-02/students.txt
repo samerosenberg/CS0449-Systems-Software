@@ -1,0 +1,9 @@
+bgates,Bill Gates,1975,3.0,CS
+sjobs,Steve Jobs,1972,3.75,EE
+bjoy,Bill Joy,1979,3.8,CS
+lellison,Larry Ellison,1968,4.0,IS
+vkhosla,Vinod Khosla,1950,3.7,EE
+smcnealy,Scott McNeeley,1978,3.2,CS
+dknuth,don Knuth,1949,4.0,MS
+bpascal,Blaise Pascal,1824,3.9,MA
+hoffmant,Tim Hoffman,1991,3.5,MST

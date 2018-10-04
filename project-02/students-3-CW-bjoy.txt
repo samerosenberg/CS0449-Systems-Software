@@ -1,0 +1,26 @@
+LIST: bgates sjobs bjoy lellison vkhosla smcnealy dknuth bpascal hoffmant
+DELETING: bjoy
+LIST: bgates sjobs lellison vkhosla smcnealy dknuth bpascal hoffmant
+RESUMING AT: lellison and skipping 3 elements
+DELETING: dknuth
+LIST: bgates sjobs lellison vkhosla smcnealy bpascal hoffmant
+RESUMING AT: bpascal and skipping 3 elements
+DELETING: sjobs
+LIST: bgates lellison vkhosla smcnealy bpascal hoffmant
+RESUMING AT: lellison and skipping 3 elements
+DELETING: bpascal
+LIST: bgates lellison vkhosla smcnealy hoffmant
+RESUMING AT: hoffmant and skipping 3 elements
+DELETING: vkhosla
+LIST: bgates lellison smcnealy hoffmant
+RESUMING AT: smcnealy and skipping 3 elements
+DELETING: lellison
+LIST: bgates smcnealy hoffmant
+RESUMING AT: smcnealy and skipping 3 elements
+DELETING: smcnealy
+LIST: bgates hoffmant
+RESUMING AT: hoffmant and skipping 3 elements
+DELETING: bgates
+LIST: hoffmant
+RESUMING AT: hoffmant and skipping 3 elements
+DELETING: hoffmant   <-- was the last man standing!
