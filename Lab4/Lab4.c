@@ -106,7 +106,6 @@ int main()
 		else if (option == 'Q' )
 			exit( 0 );
 	} // END WHILE
-
   	return 0;
 }
 
@@ -159,28 +158,53 @@ void insertAtTail( Node **head, char * word )
 
 void removeAtFront( Node ** head )
 {
-	Node *next = *head;
-	if(next==NULL){
-		next = next->next;
-	}
-	else{
-		*head = next->next;
-	}
+		Node * first = *head;
+		*head = (*head)->next;
+		free(first);
+
 }
 
 void removeNode( Node ** head, char * key )
 {
-	//YOUR CODE HERE
+	Node * temp = *head;
+	Node * prev;
+	if(temp!=NULL && strcmp((temp->word),key)==0){
+		removeAtFront(head);
+	}
+	else{
+		while(temp!=NULL &&  strcmp((temp->word),key)!=0){
+			prev = temp;
+			temp = temp->next;
+		}
+		if(temp == NULL) return;
+		prev->next = temp->next;
+		removeAtFront(&temp);
+	}
 }
 
 Node * searchNode ( Node * head, char * key )
 {
-	if(head==NULL){
-
+  Node * temp = head;
+	if(temp==NULL){
+    return NULL;
 	}
+  else{
+    while(temp != NULL){
+      if(strcmp(temp->word,key)==0){
+        return temp;
+      }
+      else{
+        temp = temp->next;
+      }
+    }
+		free(temp);
+		return NULL;
+  }
 }
 
 void freeList(  Node ** head )
 {
-	// YOUR CODE HERE
+	while (*head!=NULL) {
+		removeAtFront(head);
+	}
 }
