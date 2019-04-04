@@ -1,0 +1,22 @@
+1. How to compile:
+gcc mallocdrv.c mymalloc.c
+
+2. Tips: 
+Do not change malocdrv.c! 
+add new type definition (like node in linked list) in mymalloc.c
+add function definition you need in mymalloc.h
+add function implemetation in mymalloc.c
+start testing with a simple test case written by yourself. 
+
+3. What to submit:
+(1) mymalloc.h
+(2) mymalloc.c
+(3) mytest.c
+(4) readme, a readme introduce what is your test case and how to test that. 
+
+4. Rubric:
+(1) Hand in on time. 10'
+(2) test 1 and test 2 in mallocdrv.c (40') 
+(3) Pass your own test cass (20')
+(4) TA's test case (there is another testdrv only for TA) (10')
+(5) No memory errors: so don't have any! run your code under valgrind. (20') 

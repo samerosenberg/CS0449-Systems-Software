@@ -20,7 +20,12 @@ char ** split(char * line, int * tokensCnt, char * delim);
 
 void printStudent( void * data, int mode )
 {
-	// YOUR CODE HERE
+	STUDENT * s = (STUDENT*) data;
+	if(mode==BRIEF){
+		printf("%s" ,s->andrewID);
+	}else{
+		printf("%s %s %d %f %s",s->andrewID,s->name,s->yrOfGrad,s->gpa,s->major);
+	}
 }
 
 // see the strcmp function defintion - do likewise
@@ -28,6 +33,9 @@ int compareStudent( void * data1, void *data2 )
 {
 	// YOUR CODE HERE
 	// do your strcmp operation baed on the id string
+	STUDENT * s1 = (STUDENT*) data1;
+	STUDENT * s2 = (STUDENT*) data2;
+	return strcmp(s1->andrewID,s2->andrewID);
 }
 
 // you are given a ptr to the node to be freed
@@ -36,6 +44,11 @@ void freeStudent(void *student)
 	//YOUR CODE HERE
 	// free the srtring fields
 	// then free the node itself
+	STUDENT * s = (STUDENT*) student;
+	free(s->andrewID);
+	free(s->name);
+	free(s->major);
+	free(s);
 }
 
 

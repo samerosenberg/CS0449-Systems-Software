@@ -8,13 +8,14 @@ char * mygetline( char **buffer,  FILE * infile );
 
 void printString( void * data, int mode )
 {
-	// YOUR CODE HERE
+	mode=mode;
+	printf("%s",(char*)data);
 }
 
 int compareString( void * data1, void *data2 )
 {
 	// YOUR CODE HERE
-	return 0;  // just to make it compile you change as needed 
+	return strcmp((char*)data1,(char*)data2);  // just to make it compile you change as needed
 }
 
 /* Reads strings from the file into the liked list */
@@ -31,7 +32,8 @@ void loadList( CDLL *list, char *infileName)
 
 void freeString(void *data)
 {
-	// YOUR CODE HERE
+	char * data1 = (char*) data;
+	free(data1);
 }
 
 /* == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == */

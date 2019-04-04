@@ -1,0 +1,491 @@
+import java.util.*;
+import java.io.*;
+
+public class ApartmentTester{
+  private static Apartment[] apts = new Apartment[20];
+  private static Apartment[] minPriceAptsPQ;
+  private static Hashtable<String,Integer> minPriceAptsIndex = new Hashtable<String,Integer>();
+  private static Hashtable<String,Integer> maxSqftAptsIndex = new Hashtable<String,Integer>();
+  private static Apartment[] maxSqftAptsPQ;
+  private static Hashtable<String,Integer> priceCities = new Hashtable<String,Integer>();
+  private static Hashtable<String,Integer> sqftCities = new Hashtable<String,Integer>();
+  private static Apartment[] minPriceByCity = new Apartment[20];
+  private static Apartment[] maxSqftByCity = new Apartment[20];
+
+  private static int n= 0;
+  private static int priceCC=0;
+  private static int sqftCC=0;
+  public static void main(String[] args)throws Exception{
+
+    Scanner inFile  = new Scanner(new File("apartments.txt"));
+    //used to get rid of the first line stating parts of address
+    inFile.nextLine();
+
+    while(
+inFile.hasNextLine()){
+      String[] line = inFile.nextLine().split(":");
+      apts[n] = new Apartment(line[0],line[1],line[2],Integer.parseInt(line[3]),
+      Integer.parseInt(line[4]),Integer.parseInt(line[5]));
+      n++;
+    }
+
+    MinPricePQ();
+    MaxSqftPQ();
+
+    //used to display list of apartments for debugging
+    /*for(int i=1; i<=n;i++){
+      String key = minPriceAptsPQ[i].address+","+minPriceAptsPQ[i].aptnum+","+minPriceAptsPQ[i].zip;
+      System.out.println(minPriceAptsIndex.get(key));
+      minPriceAptsPQ[i].print();
+    }
+    System.out.println("--------------------------------------");
+    for(int i=1;i<=n;i++){
+      String key = maxSqftAptsPQ[i].address+","+maxSqftAptsPQ[i].aptnum+","+maxSqftAptsPQ[i].zip;
+      System.out.println(maxSqftAptsIndex.get(key));
+      maxSqftAptsPQ[i].print();
+      System.out.println();
+    }*/
+
+    Scanner scan = new Scanner(System.in);
+
+    boolean done = false;
+    while(!done){
+      System.out.println("What would you like to do?");
+      System.out.p
+rintln("1) Add an apartment");
+      System.out.println("2) Update an apartment");
+      System.out.println("3) Remove a specific apartment");
+      System.out.println("4) Retrieve the lowest price apartment");
+      System.out.println("5) Retrieve the highest square footage apartment");
+      System.out.println("6) Retrieve the lowest price apartment by city");
+      System.out.println("7) Retrieve the highest square footage apartment by city");
+      System.out.println("Enter in a value 1-7 for it's option, or 8 to quit: ");
+      int input = scan.nextInt();
+      System.out.println();
+      switch(input){
+        case 1:
+          addApt();
+          break;
+        case 2:
+          updateApt();
+          break;
+        case 3:
+          removeApt();
+          break;
+        case 4:
+          getLowestPrice();
+          break;
+        case 5:
+          getHighestSqft();
+          break;
+        case 6:
+          getLowestPriceByCity();
+          break;
+        case 7:
+          getHighestSqftByCity();
+    
+      break;
+        case 8:
+          System.out.println();
+          System.out.println("Bye!");
+          done = true;
+          break;
+      }
+
+      //used to display list of apartments for debugging
+      /*for(int i=1; i<=n;i++){
+        String key = minPriceAptsPQ[i].address+","+minPriceAptsPQ[i].aptnum+","+minPriceAptsPQ[i].zip;
+        System.out.println(minPriceAptsIndex.get(key));
+        minPriceAptsPQ[i].print();
+      }
+      System.out.println("--------------------------------------");
+      for(int i=1;i<=n;i++){
+        String key = maxSqftAptsPQ[i].address+","+maxSqftAptsPQ[i].aptnum+","+maxSqftAptsPQ[i].zip;
+        System.out.println(maxSqftAptsIndex.get(key));
+        maxSqftAptsPQ[i].print();
+        System.out.println();
+      }*/
+
+
+    }
+  }
+
+  public static void MinPricePQ() {
+    minPriceAptsPQ = new Apartment[n+1];
+    for (int i = 0; i < n; i++){
+      minPriceAptsPQ[i+1] = apts[i];
+      String key = apts[i].address+","+apts[i].aptnum+","+apts[i].zip;
+      minPriceAptsIndex.put(
+key,i+1);
+      String city = apts[i].city;
+      if(priceCities.get(city)==null){
+        priceCities.put(city,priceCC);
+        minPriceByCity[priceCC] = apts[i];
+        priceCC++;
+      }else{
+        int pos = priceCities.get(city);
+        if(minPriceByCity[pos].price>apts[i].price){
+          minPriceByCity[pos] = apts[i];
+        }
+      }
+    }
+    for (int k = n/2; k >= 1; k--)
+      priceSink(k);
+    }
+  private static void priceSink(int k) {
+    while (2*k <= n) {
+      int j = 2*k;
+      if (j < n && greaterPrice(j, j+1)) j++;
+      if (!greaterPrice(k, j)) break;
+      exchPrice(k, j);
+        k = j;
+      }
+  }
+  private static boolean greaterPrice(int i, int j) {
+    boolean result=false;
+    if(minPriceAptsPQ[i].price>minPriceAptsPQ[j].price)
+      result = true;
+    return result;
+  }
+  private static void exchPrice(int i, int j)
+   {
+    String key1 = minPriceAptsPQ[i].address+","+minPriceAptsPQ[i].aptnum+","+minPriceAptsPQ[i].zip;
+    String key2 = minPriceAptsPQ[j].address+","+minPriceApt
+sPQ[j].aptnum+","+minPriceAptsPQ[j].zip;
+
+    minPriceAptsIndex.put(key1,j);
+    minPriceAptsIndex.put(key2,i);
+
+    String city = minPriceAptsPQ[j].city;
+    int pos = priceCities.get(city);
+    if(minPriceAptsPQ[j].price<minPriceByCity[pos].price){
+      minPriceByCity[pos] = minPriceAptsPQ[j];
+    }
+
+    Apartment swap = minPriceAptsPQ[i];
+    minPriceAptsPQ[i] = minPriceAptsPQ[j];
+    minPriceAptsPQ[j] = swap;
+  }
+  public static void insertPrice(Apartment x) {
+    if (n == minPriceAptsPQ.length - 1) resizePrice(2 * minPriceAptsPQ.length);
+    minPriceAptsPQ[++n] = x;
+    String key = x.address+","+x.aptnum+","+x.zip;
+    minPriceAptsIndex.put(key,n);
+    String city = x.city;
+    if(priceCities.get(city)==null){
+      priceCities.put(city,priceCC);
+      minPriceByCity[priceCC] = x;
+      priceCC++;
+    }else{
+      int pos = priceCities.get(city);
+      if(minPriceByCity[pos] == null){
+        minPriceByCity[pos] = x;
+      }else if(minPriceByCity[pos].price>x.price){
+        minPriceByCity[pos] = x;
+  
+    }
+    }
+    swimPrice(n);
+    //assert isMinHeap();
+  }
+  private static void resizePrice(int capacity) {
+    assert capacity > n;
+    Apartment[] temp = new Apartment[capacity];
+    for (int i = 1; i <= n; i++) {
+        temp[i] = minPriceAptsPQ[i];
+    }
+    minPriceAptsPQ = temp;
+  }
+  private static void swimPrice(int k) {
+    while (k > 1 && greaterPrice(k/2, k)) {
+      exchPrice(k, k/2);
+      k = k/2;
+    }
+  }
+
+
+  public static void MaxSqftPQ() {
+   maxSqftAptsPQ = new Apartment[n+1];
+   for (int i = 0; i < n; i++){
+       maxSqftAptsPQ[i+1] = apts[i];
+       String key = apts[i].address+","+apts[i].aptnum+","+apts[i].zip;
+       maxSqftAptsIndex.put(key,i+1);
+       String city = apts[i].city;
+       if(sqftCities.get(city)==null){
+         sqftCities.put(city,sqftCC);
+         maxSqftByCity[sqftCC] = apts[i];
+         sqftCC++;
+       }else{
+         int pos = sqftCities.get(city);
+         if(maxSqftByCity[pos].sqft<apts[i].sqft){
+           maxSqftByCity[pos] = apts[i];
+         }
+       }
+  
+   }
+   for (int k = n/2; k >= 1; k--)
+       sqftSink(k);
+   }
+  private static void sqftSink(int k) {
+    while (2*k <= n) {
+      int j = 2*k;
+      if (j < n && lessSqft(j, j+1)) j++;
+      if (!lessSqft(k, j)) break;
+      exchSqft(k, j);
+      k = j;
+    }
+  }
+  private static boolean lessSqft(int i, int j) {
+    boolean result = false;
+    if(maxSqftAptsPQ[i].sqft<maxSqftAptsPQ[j].sqft)
+      result = true;
+    return result;
+  }
+  private static void exchSqft(int i, int j) {
+    String key1 = maxSqftAptsPQ[i].address+","+maxSqftAptsPQ[i].aptnum+","+maxSqftAptsPQ[i].zip;
+    String key2 = maxSqftAptsPQ[j].address+","+maxSqftAptsPQ[j].aptnum+","+maxSqftAptsPQ[j].zip;
+
+    maxSqftAptsIndex.put(key1,j);
+    maxSqftAptsIndex.put(key2,i);
+
+    String city = maxSqftAptsPQ[j].city;
+    int pos = sqftCities.get(city);
+    if(maxSqftAptsPQ[j].sqft>maxSqftByCity[pos].sqft){
+      maxSqftByCity[pos] = maxSqftAptsPQ[j];
+    }
+
+    Apartment swap = maxSqftAptsPQ[i];
+    maxSqftAptsPQ[i] = maxSqftAptsPQ[j];
+    maxS
+qftAptsPQ[j] = swap;
+  }
+  public static void insertSqft(Apartment x) {
+    if (n == maxSqftAptsPQ.length - 1) resizeSqft(2 * maxSqftAptsPQ.length);
+    maxSqftAptsPQ[++n] = x;
+    String key = x.address+","+x.aptnum+","+x.zip;
+    maxSqftAptsIndex.put(key,n);
+    String city = x.city;
+    if(sqftCities.get(city)==null){
+      sqftCities.put(city,sqftCC);
+      maxSqftByCity[sqftCC] = x;
+      sqftCC++;
+    }else{
+      int pos = sqftCities.get(city);
+      if(maxSqftByCity[pos] == null){
+        maxSqftByCity[pos] = x;
+      }else if(maxSqftByCity[pos].sqft<x.sqft){
+        maxSqftByCity[pos] =x;
+      }
+    }
+    swimSqft(n);
+  }
+  private static void resizeSqft(int capacity) {
+    Apartment[] temp = new Apartment[capacity];
+    for (int i = 1; i <= n; i++) {
+        temp[i] = maxSqftAptsPQ[i];
+    }
+    maxSqftAptsPQ = temp;
+  }
+  private static void swimSqft(int k) {
+    while (k > 1 && lessSqft(k/2, k)) {
+        exchSqft(k, k/2);
+        k = k/2;
+    }
+  }
+
+  public static Apartment getPriceApartment(){
+
+    boolean done = false;
+    do{
+      Scanner scan = new Scanner(System.in);
+      System.out.println("Enter in the street address: ");
+      String addy = scan.nextLine();
+      System.out.println("Enter in the apartment number: ");
+      String aptnum = scan.nextLine();
+      System.out.println("Enter in the zipcode: ");
+      int zip = scan.nextInt();
+      System.out.println();
+      scan.nextLine();
+      String key = addy+","+aptnum+","+zip;
+      if(minPriceAptsIndex.get(key)!= null){
+        int pos = minPriceAptsIndex.get(key);
+        Apartment apt = minPriceAptsPQ[pos];
+        Apartment end = minPriceAptsPQ[n];
+
+        String key1 = end.address+","+end.aptnum+","+end.zip;
+        minPriceAptsIndex.put(key1,pos);
+        minPriceAptsPQ[pos]=end;
+        minPriceAptsPQ[n] = null;
+        if(pos==1){
+          String city = apt.city;
+          int pos1 = priceCities.get(city);
+          minPriceByCity[pos1]=null;
+          for(int i=1;i<=n;i++){
+            if(minPriceAptsPQ[i].city.equals(city))
+{
+              //priceCities.put(city,i);
+              minPriceByCity[pos1] = minPriceAptsPQ[i];
+              break;
+            }
+          }
+        }
+        n--;
+        while (pos > 1 && greaterPrice(pos/2, pos)) {
+          exchPrice(pos, pos/2);
+          pos = pos/2;
+        }
+        while (2*pos <= n) {
+          int j = 2*pos;
+          if (j < n && greaterPrice(j, j+1)) j++;
+          if (!greaterPrice(pos, j)) break;
+          exchPrice(pos, j);
+            pos = j;
+        }
+        done = true;
+        return apt;
+      }else{
+        System.out.println("Invalid Address! Try Again!");
+        System.out.println();
+      }
+    }while(!done);
+    //this will never execute
+    Apartment apt = new Apartment("temp","temp","temp",1,1,1);
+    return apt;
+  }
+
+  public static void addApt(){
+    Scanner scan = new Scanner(System.in);
+    System.out.println();
+    System.out.println("Enter in the address: ");
+    String addy = scan.nextLine();
+    System.out.println("Enter in the apartment number: ");
+
+    String aptnum = scan.nextLine();
+    System.out.println("Enter in the city: ");
+    String city = scan.nextLine();
+    System.out.println("Enter in the zip code: ");
+    int zip = scan.nextInt();
+    System.out.println("Enter in the price: ");
+    int price = scan.nextInt();
+    System.out.println("Enter in the sqft: ");
+    int sqft = scan.nextInt();
+    System.out.println();
+
+    Apartment apt = new Apartment(addy,aptnum,city,zip,price,sqft);
+    insertSqft(apt);
+    n--;
+    insertPrice(apt);
+  }
+  public static void updateApt(){
+    Scanner scan = new Scanner(System.in);
+    Apartment apt = getPriceApartment();
+    apt.print();
+    System.out.println();
+    System.out.println("The current price of this apartment is "+apt.price+". Would you like to update this price? y/n");
+    String input = scan.nextLine();
+    System.out.println();
+    if(input.equals("y")){
+      System.out.println("Enter in the new price: ");
+      int price = scan.nextInt();
+      System.out.println();
+      apt.price = price;
+ 
+     insertPrice(apt);
+      String key = apt.address+","+apt.aptnum+","+apt.zip;
+      int pos = maxSqftAptsIndex.get(key);
+      maxSqftAptsPQ[pos].price = price;
+      System.out.println("Updated!");
+      System.out.println();
+    }else if(input.equals("n")){
+      System.out.println("OK thanks for stopping by!");
+      System.out.println();
+    }
+
+  }
+  public static void removeApt(){
+    Apartment apt = getPriceApartment();
+    String key = apt.address+","+apt.aptnum+","+apt.zip;
+    int pos = maxSqftAptsIndex.get(key);
+    n++;
+    Apartment end = maxSqftAptsPQ[n];
+    String key1 = end.address+","+end.aptnum+","+end.zip;
+    maxSqftAptsIndex.put(key1,pos);
+    maxSqftAptsPQ[pos]=end;
+    maxSqftAptsPQ[n] = null;
+    if(pos==1){
+      String city = apt.city;
+      int pos1 = sqftCities.get(city);
+      maxSqftByCity[pos1] = null;
+      for(int i=1;i<=n;i++){
+        if(maxSqftAptsPQ[i].city.equals(city)){
+          //sqftCities.put(city,i);
+          maxSqftByCity[pos1] = maxSqftAptsPQ[i];
+          br
+eak;
+        }
+      }
+    }
+    n--;
+    while (pos > 1 && lessSqft(pos/2, pos)) {
+        exchSqft(pos, pos/2);
+        pos = pos/2;
+    }
+    while (2*pos <= n) {
+      int j = 2*pos;
+      if (j < n && lessSqft(j, j+1)) j++;
+      if (!lessSqft(pos, j)) break;
+      exchSqft(pos, j);
+      pos = j;
+    }
+  }
+  public static void getLowestPrice(){
+    System.out.println("The lowest price apartment is: ");
+    minPriceAptsPQ[1].print();
+    System.out.println();
+  }
+  public static void getHighestSqft(){
+    System.out.println("The highest square footage apartment is: ");
+    maxSqftAptsPQ[1].print();
+    System.out.println();
+  }
+  public static void getLowestPriceByCity(){
+    Scanner scan = new Scanner(System.in);
+    System.out.println("Enter in the city: ");
+    String city = scan.nextLine();
+    int pos = priceCities.get(city);
+    Apartment apt = minPriceByCity[pos];
+    if(apt!=null){
+      System.out.println();
+      System.out.println("The lowest price apartment in "+city+" is: ");
+      apt.print
+();
+      System.out.println();
+    }else{
+      System.out.println();
+      System.out.println("No apartment found in that city!");
+      System.out.println();
+    }
+  }
+  public static void getHighestSqftByCity(){
+    Scanner scan = new Scanner(System.in);
+    System.out.println("Enter in the city: ");
+    String city = scan.nextLine();
+    int pos = sqftCities.get(city);
+    Apartment apt = maxSqftByCity[pos];
+    if(apt!=null){
+      System.out.println();
+      System.out.println("The highest square footage apartment in "+city+" is: ");
+      apt.print();
+      System.out.println();
+    }else{
+      System.out.println();
+      System.out.println("No apartment found in that city!");
+      System.out.println();
+    }
+  }
+
+
+}
+
+
+

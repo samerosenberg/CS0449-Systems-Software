@@ -15,20 +15,29 @@ void fatal( char * msg )
 	initList:
 
 */
-void initList(CDLL *list, int (*compare)(void*, void*), void (*print)(void*, int),
-			  void (*freeData)(void *))
+void initList(CDLL *list, int (*compare)(void*, void*), void (*print)(void*, int),void (*freeData)(void *))
 {
-	/* Y O U R   C O D E    H E R E */
-	1) set the head pointer in the CDLL struct to NULL
-	2) assign each of the incoming function pointers into their respective fields in the CDLL struct
+	list->head = NULL;
+	list->compare = compare;
+	list->print = print;
+	list->freeData = freeData;
+
+//	1) set the head pointer in the CDLL struct to NULL
+//	2) assign each of the incoming function pointers into their respective fields in the CDLL struct
 }
 
 
 /* ----------------------------------------------------------------------------
 */
-void insertAtTail(CDLL *list, void *data)
+void insertAtTail(CDLL * list, void *data)
 {
-	/* Y O U R   C O D E    H E R E */
+	while(list->head->next!=NULL){
+		list->head = list->head->next;
+	}
+	CDLL_NODE * new = malloc(sizeof(CDLL_NODE));
+	list->head->next = new;
+	new->data = data;
+	new->prev = list->head;
 }
 
 
@@ -45,7 +54,17 @@ void insertAtTail(CDLL *list, void *data)
 */
 CDLL_NODE * deleteNode(CDLL *list, CDLL_NODE *deadNode, int direction )
 {
-	/* Y O U R   C O D E    H E R E */
+	if(list->head!=NULL && strcmp((list->head->data),deadNode->data)==0){
+		list->head = list->head->next;
+		return list->head->next;
+	}
+	while(list->head!=NULL &&  strcmp((list->head->data),deadNode->data)!=0){
+		list->head->prev = list->head;
+		list->head = list->head->next;
+	}
+	if(list->head == NULL) return NULL;
+	list->head->prev = list->head->next;
+	return list->head->next;
 }
 
 
@@ -59,7 +78,18 @@ CDLL_NODE * deleteNode(CDLL *list, CDLL_NODE *deadNode, int direction )
 
 void printList( CDLL list, int direction, int mode )
 {
-	/* Y O U R   C O D E    H E R E */
+	while(list.head!=NULL){
+		if(direction == CLOCKWISE){
+			char *s = (char*)(list.head->data);
+			printf("%s",s);
+			list.head = list.head->next;
+		}
+		else{
+			char *s = (char*)(list.head->data);
+			printf("%s",s);
+			list.head = list.head->prev;
+		}
+	}
 }
 
 
@@ -72,5 +102,19 @@ void printList( CDLL list, int direction, int mode )
 */
 CDLL_NODE * searchList( CDLL list, void * target )
 {
-	/* Y O U R   C O D E    H E R E */
+	char * key = (char*)target;
+	if(list.head==NULL){
+		return NULL;
+	}
+	else{
+		while(list.head != NULL){
+			if(strcmp(list.head->data,key)==0){
+				return list.head;
+			}
+			else{
+				list.head = list.head->next;
+			}
+		}
+		return NULL;
+	}
 }
